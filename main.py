@@ -42,12 +42,12 @@ class WebArchiveDownloader:
             if response.status_code == 200:
                 self.status_text.insert(tk.END, "Site downloaded successfully!\n")
 
-                # Збереження HTML-файлу
+                # Saving an HTML file
                 html_content = response.text
                 with open("index.html", "w", encoding="utf-8") as html_file:
                     html_file.write(html_content)
 
-                # Збереження інших ресурсів
+                # Saving other resources
                 self.save_resources(response.text, url)
 
                 self.status_text.insert(tk.END, "Files saved successfully!\n")
@@ -70,17 +70,17 @@ class WebArchiveDownloader:
         try:
             response = requests.get(url)
             if response.status_code == 200:
-                # Отримуємо шлях до поточної директорії
+                # Get the path to the current directory
                 current_dir = os.getcwd()
-                # Отримуємо шлях до директорії, в яку зберігатимемо ресурс
+                # We get the path to the directory in which we will store the resource
                 resource_dir = os.path.join(current_dir, "resources")
-                # Перевіряємо, чи існує директорія, якщо ні - створюємо її
+                # Check if the directory exists, if not - create it
                 if not os.path.exists(resource_dir):
                     os.makedirs(resource_dir)
 
-                # Отримуємо ім'я файлу з URL
+                # Getting the filename from a URL
                 filename = os.path.basename(urlparse(url).path)
-                # Зберігаємо ресурс
+                # We save the resource
                 with open(os.path.join(resource_dir, filename), 'wb') as f:
                     f.write(response.content)
         except Exception as e:
